@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  frontend:
+    image: ${DOCKER_USERNAME}/${PROJECT_NAME}:${PROJECT_VERSION}
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
+    ports:
+      - '80:4200'
+    env_file:
+      - .env
+    # platform: linux/amd64

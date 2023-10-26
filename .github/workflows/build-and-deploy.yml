@@ -1,0 +1,37 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:0.0.1
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build --build-arg ADMIN_URL_PROD=${{ secrets.ADMIN_URL_PROD }} -t ${{ env.DOCKER_IMAGE }} -f Dockerfile.prod .
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push Docker image
+        run: docker push ${{ env.DOCKER_IMAGE }}
+      - name: SSH into server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            docker stop ${{ secrets.PROJECT_NAME }}
+            docker rmi ${{ env.DOCKER_IMAGE }}
+            cd /root/${{ secrets.PROJECT_NAME }}
+            git pull
+            docker pull ${{ env.DOCKER_IMAGE }}
+            docker run -p 4200:80 --rm -d --name ${{ secrets.PROJECT_NAME }} ${{ env.DOCKER_IMAGE }}
