@@ -1,7 +1,22 @@
 {
   "name": "astro-starter",
+  "version": "1.0.0",
+  "description": "Starter template for Astro project with React JS and Tailwind CSS",
+  "author": "Anton Mayatskiy <work.mayatskiy@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtNekki/astro-starter.git"
+  },
+  "keywords": ["astro", "starter", "react", "tailwind"],
+  "homepage": "https://astro-starter.ru",
+  "bugs": {
+    "url": "https://github.com/ArtNekki/astro-starter.git/issues"
+  },
+  "engines": {
+    "node": ">=20.15.0"
+  },
   "type": "module",
-  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
