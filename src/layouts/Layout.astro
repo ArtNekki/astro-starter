@@ -1,51 +1,85 @@
 ---
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <!--<link rel="icon" type="image/x-icon" href="/favicon.ico" />-->
+
+    <!-- Basic meta tags -->
+    <meta name="description" content="Описание вашего Astro приложения" />
+    <meta name="keywords" content="astro, web application, ключевые слова" />
+    <meta name="author" content="Ваше имя или название компании" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="Название вашего приложения" />
+    <meta property="og:description" content="Краткое описание вашего приложения" />
+    <!--  <meta property="og:image" content="URL к изображению для превью">-->
+    <meta property="og:url" content="URL вашего сайта" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Название вашего приложения" />
+    <meta name="twitter:description" content="Краткое описание вашего приложения" />
+    <!--  <meta name="twitter:image" content="URL к изображению для превью">-->
+
+    <!-- For Internet Explorer -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- For mobile devices -->
+    <meta name="theme-color" content="#ваш_цвет" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- For Apple devices -->
+    <!--  <link rel="apple-touch-icon" href="path/to/apple-touch-icon.png">-->
+    <!--  <link rel="mask-icon" href="path/to/safari-pinned-tab.svg" color="#ваш_цвет">-->
+
+    <!-- Preloading critical resources -->
+    <!--  <link rel="preload" href="critical.css" as="style">-->
+    <!--  <link rel="preload" href="main.js" as="script">-->
+
+    <!-- Canonical URL -->
+    <!--  <link rel="canonical" href="https://www.your-domain.com/current-page">-->
+
+    <!-- Alternative page versions -->
+    <!--  <link rel="alternate" hreflang="es" href="https://es.your-domain.com/current-page">-->
+    <!--  <link rel="alternate" hreflang="fr" href="https://fr.your-domain.com/current-page">-->
+
+    <!-- DNS prefetch -->
+    <!--  <link rel="dns-prefetch" href="//fonts.googleapis.com">-->
+    <!--  <link rel="dns-prefetch" href="//www.google-analytics.com">-->
+
+    <!-- Structured Data -->
+    <!--  <script type="application/ld+json">-->
+    <!--    {-->
+    <!--      "@context": "http://schema.org",-->
+    <!--      "@type": "WebApplication",-->
+    <!--      "name": "Ваше Astro приложение",-->
+    <!--      "description": "Описание вашего приложения",-->
+    <!--      "url": "https://www.your-domain.com"-->
+    <!--    }-->
+    <!--  </script>-->
+
+    <!-- Inline critical CSS -->
+    <style>
+      /* Place your critical CSS here */
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>
