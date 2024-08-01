@@ -1,0 +1,111 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  determine-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.set-env.outputs.env_name }}
+    steps:
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ ${{ github.base_ref }} == 'main' ]]; then
+            echo "env_name=production" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=staging" >> $GITHUB_OUTPUT
+          fi
+
+  build-and-test:
+    needs: determine-environment
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ needs.determine-environment.outputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: Install Dependencies
+        run: npm ci --also=dev
+
+      - name: Run Linting
+        run: npm run lint
+
+#      - name: Run Tests
+#        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+
+      - name: Build
+        run: npm run build -- --configuration $NODE_ENV
+
+  security-scan:
+    needs: determine-environment
+    runs-on: ubuntu-latest
+    environment: ${{ needs.determine-environment.outputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          target: 'http://${{ secrets.SSH_HOST }}:${{ vars.SSH_PORT }}'
+
+      - name: Upload ZAP Scan Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap_scan_${{ needs.determine-environment.outputs.env_name }}
+          path: |
+            zap_report.html
+            zap_report.xml
+          retention-days: 5
+
+  docker-build:
+    needs: determine-environment
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ needs.determine-environment.outputs.env_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: ${{ github.repository }}:pr-${{ github.event.number }}-${{ needs.determine-environment.outputs.env_name }}
+          build-args: |
+            NODE_ENV=${{ env.NODE_ENV }}
+            DOPPLER_CONFIG=${{ secrets.DOPPLER_CONFIG }}
+            STRAPI_URL=${{ secrets.STRAPI_URL }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
