@@ -1,0 +1,37 @@
+# Stage 1: Install dependencies
+FROM node:20 AS deps
+
+WORKDIR /app
+
+# Copy package.json and package-lock.json files
+COPY package*.json ./
+
+# Install all dependencies, including devDependencies
+RUN npm ci
+
+# Stage 2: Development
+FROM node:20
+
+ARG NODE_ENV=development
+ENV NODE_ENV=$NODE_ENV
+
+# Add environment variables as in the previous file
+ARG STRAPI_URL
+ENV STRAPI_URL=${STRAPI_URL}
+
+ARG DOPPLER_CONFIG
+ENV DOPPLER_CONFIG=${DOPPLER_CONFIG}
+
+WORKDIR /app
+
+# Copy installed dependencies
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 4321
+
+# Run the application in development mode
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

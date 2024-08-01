@@ -1,12 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Info from "../components/Info";
+import { STRAPI_URL, DOPPLER_CONFIG, NODE_ENV } from "astro:env/client";
 
 const title = "Astro Starter";
 const text = "Добро пожаловать в ваш новый проект!";
-const configName = "no";
-const environment = "no";
-const apiUrl = "no";
 ---
 
 <Layout title="Welcome to Astro.">
@@ -15,10 +13,10 @@ const apiUrl = "no";
       <h1 class="text-4xl font-bold text-gray-800 mb-4">{title}</h1>
       <p class="text-xl text-gray-600 mb-4">{text}</p>
       <Info
-        config={[
-          { name: "configName", value: configName },
-          { name: "environment", value: environment },
-          { name: "apiUrl", value: apiUrl },
+        configList={[
+          { name: "configName", value: DOPPLER_CONFIG },
+          { name: "environment", value: NODE_ENV },
+          { name: "apiUrl", value: STRAPI_URL },
         ]}
       />
 
