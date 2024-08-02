@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Config {
   name: string;
   value: string;

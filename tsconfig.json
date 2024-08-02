@@ -2,6 +2,32 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
-  }
+    "jsxImportSource": "react",
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+
+    // Sets the base path for resolving non-relative module names
+     "baseUrl": ".",
+
+    // Allows configuring path aliases for imports
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    // Automatically creates a default namespace when importing CommonJS modules
+    "esModuleInterop": true,
+
+    // Ensures that each file can be safely transpiled without relying on other files
+    "isolatedModules": true,
+
+    // Allows importing JSON files as modules
+    "resolveJsonModule": true,
+
+    // Ensures consistency in the use of file names casing when importing
+    "forceConsistentCasingInFileNames": true,
+
+    // Skips type checking of declaration files in node_modules
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "tests/**/*", "vitest.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }
