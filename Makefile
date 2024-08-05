@@ -4,5 +4,8 @@ copy-id-pub:
 copy-id:
 	pbcopy < ~/.ssh/id_rsa
 
-run:
+dev:
 	doppler run --config dev -- npm run dev
+
+rm-images:
+	docker image prune -af

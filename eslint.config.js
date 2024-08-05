@@ -44,8 +44,7 @@ export default [
       "prettier/prettier": [
         "warn",
         {
-          // replace rules from .prettierrc.json
-          // example: endOfLine: "lf"
+          htmlWhitespaceSensitivity: "ignore",
         },
       ],
     },
