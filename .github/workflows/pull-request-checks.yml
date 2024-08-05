@@ -48,11 +48,11 @@ jobs:
       - name: Run Linting
         run: npm run lint
 
-#      - name: Run Tests
-#        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+      - name: Run Tests
+        run: npx vitest run
 
       - name: Build
-        run: npm run build -- --configuration $NODE_ENV
+        run: npm run build
 
   security-scan:
     needs: determine-environment
