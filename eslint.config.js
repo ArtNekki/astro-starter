@@ -2,6 +2,7 @@ import eslint from "@eslint/js";
 import eslintPluginAstro from "eslint-plugin-astro";
 import eslintPluginReact from "eslint-plugin-react";
 // import eslintPluginReactHooks from "eslint-plugin-react-hooks"; The plugin version is not compatible with ESLint 9.8
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import tseslint from "typescript-eslint";
 import astroParser from "astro-eslint-parser";
 import tsParser from "@typescript-eslint/parser";
@@ -10,6 +11,19 @@ export default [
   eslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
   ...tseslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "prettier/prettier": [
+        "warn",
+        {
+          // replace rules from .prettierrc.json
+          // example: endOfLine: "lf"
+        },
+      ],
+    },
+  },
   {
     files: ["**/*.astro"],
     plugins: {
@@ -24,10 +38,16 @@ export default [
       },
     },
     rules: {
-      ...eslintPluginAstro.configs.recommended.rules,
       "astro/no-conflict-set-directives": "error",
       "astro/no-unused-define-vars-in-style": "error",
       "@typescript-eslint/no-unused-vars": "warn",
+      "prettier/prettier": [
+        "warn",
+        {
+          // replace rules from .prettierrc.json
+          // example: endOfLine: "lf"
+        },
+      ],
     },
   },
   {
@@ -73,6 +93,6 @@ export default [
     },
   },
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/env.d.ts", "**/.astro/**"],
+    ignores: ["**/dist/**", "**/node_modules/**", "**/env.d.ts", "**/.astro/**", "**/.github/**"],
   },
 ];
