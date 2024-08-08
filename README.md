@@ -228,6 +228,8 @@
 
 - Запуск тестов `npm run test`
 - Запуск lint `npm run lint`
+- Тестирование workflow:
+  - ./act.sh `workflow_name` `config_name`
 
 ### Добавление домена
 
