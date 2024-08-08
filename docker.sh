@@ -61,14 +61,14 @@ main() {
 
   # Load Doppler Secrets
   log INFO "Loading Doppler secrets for config $CONFIG_NAME"
-  if ! eval $(doppler secrets download --no-file --format docker --config "$CONFIG_NAME"); then
+  if ! eval "$(doppler secrets download --no-file --format docker --config "$CONFIG_NAME")"; then
     log ERROR "Failed to load Doppler secrets"
     exit 1
   fi
 
   # Build Docker image
-  CONTAINER_NAME=astro-starter-$NODE_ENV
-  IMAGE_NAME="docker/$CONTAINER_NAME:latest"
+  CONTAINER_NAME=$(doppler secrets get DOPPLER_PROJECT --plain --config "$1")-$NODE_ENV
+  IMAGE_NAME="$(doppler secrets get DOCKER_USERNAME --plain --config "$1")/$CONTAINER_NAME:latest"
 
   if docker image inspect $IMAGE_NAME >/dev/null 2>&1; then
     log INFO "Docker image $IMAGE_NAME already exists. Skipping build."

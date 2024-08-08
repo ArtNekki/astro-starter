@@ -50,17 +50,8 @@ The project can be run both locally and through Docker. Deployment is implemente
       - `security-scan` (may not be available before the first pull request)
       - `docker-build` (may not be available before the first pull request)
 
-- Go to `Settings` -> `Secrets and Variables` -> `Actions`:
-
-  - In `Repository secrets`, specify the secrets:
-    - `DOCKER_USERNAME`
-    - `DOCKER_PASSWORD`
-  - In `Repository variables`, specify the variables:
-    - `PROJECT_NAME`
-
 - Go to `Settings` -> `Environments`:
   - Create two environments: `production` and `staging`
-  - For each of these environments, create a variable `SSH_PORT`
 - Go to `Settings` -> `Actions` -> `Workflow permissions`:
   - Set `Read and write permissions`
   - Set `Allow GitHub Actions to create and approve pull requests`
@@ -72,8 +63,11 @@ The project can be run both locally and through Docker. Deployment is implemente
 - Create a project
 - Add environment variables for necessary environments in the project:
 
+  - `DOCKER_USERNAME`
+  - `DOCKER_PASSWORD`
   - `SSH_HOST`
   - `SSH_KEY`
+  - `SSH_PORT`
   - `SSH_PASSPHRASE`
   - `SSH_USER`
   - `STRAPI_URL` (name may change depending on the backend)

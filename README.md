@@ -58,17 +58,8 @@
       - `security-scan` (до первого pull request может не быть)
       - `docker-build` (до первого pull request может не быть)
 
-- Перейти в `Settings` -> `Secrets and Variables` -> `Actions`:
-
-  - В `Repository secrets` указать секреты:
-    - `DOCKER_USERNAME`
-    - `DOCKER_PASSWORD`
-  - В `Repository variables` указать переменные:
-    - `PROJECT_NAME`
-
 - Перейти в `Settings` -> `Environments`:
   - Создать два окружения `production` и `staging`
-  - Для каждого из этих окружений создать variable `SSH_PORT`
 - Перейти в `Settings` -> `Actions` -> `Workflow permissions`:
   - Установить `Read and write permissions`
   - Установить `Allow GitHub Actions to create and approve pull requests`
@@ -80,8 +71,11 @@
 - Создать проект
 - В проекте добавить переменные окружения для необходимых environments:
 
+  - `DOCKER_USERNAME`
+  - `DOCKER_PASSWORD`
   - `SSH_HOST`
   - `SSH_KEY`
+  - `SSH_PORT`
   - `SSH_PASSPHRASE`
   - `SSH_USER`
   - `STRAPI_URL` (название может изменяться в зависимости от бэкенда)

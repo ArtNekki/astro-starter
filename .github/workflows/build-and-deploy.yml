@@ -11,7 +11,7 @@ on:
       - develop
 
 env:
-  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/${{ vars.PROJECT_NAME }}
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOPPLER_PROJECT }}
 
 jobs:
   build-and-push:
@@ -91,11 +91,11 @@ jobs:
           script: |
             set -e
             docker pull ${{ env.DOCKER_IMAGE }}:${{ needs.build-and-push.outputs.version }}
-            docker stop ${{ vars.PROJECT_NAME }} || true
-            docker rm ${{ vars.PROJECT_NAME }} || true
+            docker stop ${{ secrets.DOPPLER_PROJECT }} || true
+            docker rm ${{ secrets.DOPPLER_PROJECT }} || true
             docker run -d \
-              --name ${{ vars.PROJECT_NAME }} \
-              -p ${{ vars.SSH_PORT }}:80 \
+              --name ${{ secrets.DOPPLER_PROJECT }} \
+              -p ${{ secrets.SSH_PORT }}:80 \
               --restart unless-stopped \
               -e NODE_ENV=${{ env.NODE_ENV }} \
               -e DOPPLER_CONFIG=${{ secrets.DOPPLER_CONFIG }} \
