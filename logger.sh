@@ -9,33 +9,33 @@ NC='\033[0m' # No Color
 
 # Logging function with color support and icons
 log() {
-  local log_type=$1
-  local message=$2
+  local log_type="$1"
+  local message="$2"
   local color
   local icon
 
-  case $log_type in
+  case "$log_type" in
   "INFO")
-    color=$BLUE
+    color="$BLUE"
     icon="ℹ️"
     ;;
   "SUCCESS")
-    color=$GREEN
+    color="$GREEN"
     icon="✅"
     ;;
   "WARNING")
-    color=$YELLOW
+    color="$YELLOW"
     icon="⚠️"
     ;;
   "ERROR")
-    color=$RED
+    color="$RED"
     icon="❌"
     ;;
   *)
-    color=$NC
+    color="$NC"
     icon="➡️"
     ;;
   esac
 
-  echo -e "${color}${icon} [$(date +'%Y-%m-%d %H:%M:%S')] [$log_type] $message${NC}" | tee -a deploy.log
+  echo -e "${color}${icon} [$(date +'%Y-%m-%d %H:%M:%S')] [${log_type}] ${message}${NC}" | tee -a deploy.log
 }

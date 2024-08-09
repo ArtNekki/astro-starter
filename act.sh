@@ -5,11 +5,11 @@ WORKFLOW="$1"
 CONFIG_NAME="$2"
 
 # Logger function
-source ./logger.sh
+source "./logger.sh"
 
 # Check if WORKFLOW is provided
 if [ -z "$WORKFLOW" ]; then
-    echo "ERROR" "WORKFLOW is not specified. Please provide the workflow name."
+    log "ERROR" "WORKFLOW is not specified. Please provide the workflow name."
     exit 1
 fi
 
@@ -20,13 +20,13 @@ if [ -z "$CONFIG_NAME" ]; then
 fi
 
 # Create .secrets file
-doppler secrets download --no-file --format docker --config "$CONFIG_NAME" > .secrets
+doppler secrets download --no-file --format docker --config "$CONFIG_NAME" > ".secrets"
 
 # Run the main command
-doppler run -- act -W .github/workflows/"$WORKFLOW".yml --secret-file .secrets
+doppler run -- act -W ".github/workflows/$WORKFLOW.yml" --secret-file ".secrets"
 
 # Remove the .secrets file and check the result directly
-if rm -f .secrets; then
+if rm -f ".secrets"; then
     log "SUCCESS" "The .secrets file has been successfully removed."
 else
     log "WARNING" "Failed to remove the .secrets file. Please delete it manually."
